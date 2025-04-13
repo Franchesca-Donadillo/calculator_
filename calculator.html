@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Simple Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+        }
+        .calculator {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            height: 75%;
+            width: 30%;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        input[type="text"] {
+            width: 94%;
+            height: 65px;
+            font-size: 3em;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+        .buttons button {
+            width: 22%;
+            height: 47px;
+            padding: 10px;
+            font-size: 1em;
+            margin: 1%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <input type="text" id="display" disabled>
+        <div class="buttons">
+            <button onclick="memoryAdd()">M+</button>
+            <button onclick="memorySubtract()">M-</button>
+            <button onclick="memoryRecall()">MR</button>
+            <button onclick="memoryClear()">MC</button>
+            <button onclick="convertBase(2)">bin</button>
+            <button onclick="convertBase(8)">oct</button>
+            <button onclick="convertBase(16)">hex</button>
+            <button onclick="convertBase(10)">dec</button>
+            <button onclick="calculatePercentage()">%</button>
+            <button onclick="clearEntry()">CE</button>
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="deleteLast()">⌫</button>
+            <button onclick="press('/')">/</button>
+            <button onclick="press('7')">7</button>
+            <button onclick="press('8')">8</button>
+            <button onclick="press('9')">9</button>
+            <button onclick="press('*')">*</button>
+            <button onclick="press('4')">4</button>
+            <button onclick="press('5')">5</button>
+            <button onclick="press('6')">6</button>
+            <button onclick="press('-')">-</button>
+            <button onclick="press('1')">1</button>
+            <button onclick="press('2')">2</button>
+            <button onclick="press('3')">3</button>
+            <button onclick="press('+')">+</button>
+            <button onclick="press('-')">+/-</button>
+            <button onclick="press('0')">0</button>
+            <button onclick="press('.')">.</button>
+            <button onclick="calculate()">=</button>
+            
+            
+        </div>
+    </div>
+
+    <script>
+        function press(val) {
+            document.getElementById('display').value += val;
+        }
+
+        function calculate() {
+            try {
+                document.getElementById('display').value = eval(document.getElementById('display').value);
+            } catch (e) {
+                document.getElementById('display').value = 'Error';
+            }
+        }
+        
+
+        function deleteLast() {
+            let display = document.getElementById('display');
+            display.value = display.value.slice(0, -1);
+        }
+
+        let currentBase = 10; // Starts in decimal
+
+        function press(val) {
+            document.getElementById('display').value += val;
+        }
+
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+            currentBase = 10; // Reset base
+        }
+
+        function convertBase(newBase) {
+            let display = document.getElementById('display');
+            let input = display.value;
+
+            // Convert from current base to decimal
+            let decimalValue = parseInt(input, currentBase);
+
+            if (isNaN(decimalValue)) {
+                display.value = 'Error';
+                return;
+            }
+
+            // Convert from decimal to the new base
+            let convertedValue = decimalValue.toString(newBase).toUpperCase();
+
+            display.value = convertedValue;
+            currentBase = newBase; // Update base tracker
+        }
+
+        function clearEntry() {
+            let display = document.getElementById('display');
+            let current = display.value;
+
+            // This regex removes the last number (with optional decimal point) and any trailing spaces
+            display.value = current.replace(/[\d.]+$/g, '');
+        }
+
+    
+        function calculatePercentage() {
+            let display = document.getElementById('display');
+            let current = display.value;
+
+            // Find the last number in the expression
+            let match = current.match(/(\d+\.?\d*)$/);
+
+            if (match) {
+                let lastNumber = match[0];
+                let percent = parseFloat(lastNumber) / 100;
+
+                // Replace the last number with its percentage version
+                display.value = current.slice(0, -lastNumber.length) + percent;
+            } else {
+                display.value = 'Error';
+            }
+        }
+
+        let memory = 0;
+
+        function memoryAdd() {
+            let value = parseFloat(document.getElementById('display').value);
+            if (!isNaN(value)) {
+                memory += value;
+            }
+        }
+
+        function memorySubtract() {
+            let value = parseFloat(document.getElementById('display').value);
+            if (!isNaN(value)) {
+                memory -= value;
+            }
+        }
+
+        function memoryRecall() {
+            document.getElementById('display').value = memory;
+        }
+
+        function memoryClear() {
+            memory = 0;
+        }
+
+
+
+  
+    </script>
+</body>
+</html>
