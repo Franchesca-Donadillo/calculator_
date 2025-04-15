@@ -11,19 +11,19 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: #f0f0f0;
+            background: #F4F6F8;
         }
         .calculator {
             background: #fff;
             padding: 20px;
             border-radius: 10px;
             height: 75%;
-            width: 30%;
+            width: 350px;
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
         }
         input[type="text"] {
             width: 94%;
-            height: 65px;
+            height: 120px;
             font-size: 3em;
             padding: 10px;
             margin-bottom: 10px;
@@ -36,43 +36,52 @@
             font-size: 1em;
             margin: 1%;
             cursor: pointer;
+            
         }
-    </style>
+        .operations{
+            background-color: orange;
+
+        }
+        #equals{
+            background-color: orangered;
+        }
+
+     </style>
 </head>
 <body>
+    
 
     <div class="calculator">
         <input type="text" id="display" disabled>
         <div class="buttons">
-            <button onclick="memoryAdd()">M+</button>
+            <button  onclick="memoryAdd()">M+</button>
             <button onclick="memorySubtract()">M-</button>
             <button onclick="memoryRecall()">MR</button>
             <button onclick="memoryClear()">MC</button>
-            <button onclick="convertBase(2)">bin</button>
-            <button onclick="convertBase(8)">oct</button>
-            <button onclick="convertBase(16)">hex</button>
-            <button onclick="convertBase(10)">dec</button>
             <button onclick="calculatePercentage()">%</button>
             <button onclick="clearEntry()">CE</button>
             <button onclick="clearDisplay()">C</button>
             <button onclick="deleteLast()">⌫</button>
-            <button onclick="press('/')">/</button>
+            <button onclick="convertBase(2)">bin</button>
+            <button onclick="convertBase(8)">oct</button>
+            <button onclick="convertBase(16)">hex</button>
+            <button class="operations" onclick="press('/')">÷</button>
             <button onclick="press('7')">7</button>
             <button onclick="press('8')">8</button>
             <button onclick="press('9')">9</button>
-            <button onclick="press('*')">*</button>
+            <button class="operations" onclick="press('*')">×</button>
             <button onclick="press('4')">4</button>
             <button onclick="press('5')">5</button>
             <button onclick="press('6')">6</button>
-            <button onclick="press('-')">-</button>
+            <button class="operations"onclick="press('-')">-</button>
             <button onclick="press('1')">1</button>
             <button onclick="press('2')">2</button>
             <button onclick="press('3')">3</button>
-            <button onclick="press('+')">+</button>
+            <button class="operations" onclick="press('+')">+</button>
             <button onclick="press('-')">+/-</button>
             <button onclick="press('0')">0</button>
             <button onclick="press('.')">.</button>
-            <button onclick="calculate()">=</button>
+            <button id="equals" onclick="calculate()">=</button>
             
             
         </div>
@@ -179,9 +188,6 @@
             memory = 0;
         }
 
-
-
-  
     </script>
 </body>
 </html>
