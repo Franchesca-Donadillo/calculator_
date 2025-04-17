@@ -35,7 +35,7 @@
             padding: 10px;
             font-size: 1em;
             margin: 1%;
-            cursor: pointer;
+            cursor: url(cursor_.png),pointer;
             
         }
         .operations{
@@ -78,7 +78,7 @@
             <button onclick="press('2')">2</button>
             <button onclick="press('3')">3</button>
             <button class="operations" onclick="press('+')">+</button>
-            <button onclick="press('-')">+/-</button>
+            <button onclick="sign()">+/-</button>
             <button onclick="press('0')">0</button>
             <button onclick="press('.')">.</button>
             <button id="equals" onclick="calculate()">=</button>
@@ -95,7 +95,7 @@
         function calculate() {
             try {
                 document.getElementById('display').value = eval(document.getElementById('display').value);
-            } catch (e) {
+            } catch (e){
                 document.getElementById('display').value = 'Error';
             }
         }
@@ -141,8 +141,9 @@
             let display = document.getElementById('display');
             let current = display.value;
 
-            // This regex removes the last number (with optional decimal point) and any trailing spaces
+            // This regex removes the last number (with optional decimal point), any trailing spaces, and the operations
             display.value = current.replace(/[\d.]+$/g, '');
+
         }
 
     
@@ -161,6 +162,16 @@
                 display.value = current.slice(0, -lastNumber.length) + percent;
             } else {
                 display.value = 'Error';
+            }
+        }
+
+        function sign(){
+            let display = document.getElementById('display');
+            let current = display.value;
+            if (current.startsWith('-')) {
+                display.value = current.slice(1); // Remove the negative sign
+            } else {
+                display.value = '-' + current; // Add the negative sign
             }
         }
 
