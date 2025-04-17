@@ -17,11 +17,22 @@
             background-color:#ffffff;
             padding: 20px;
             border-radius: 10px;
-            border: 1.5px solid black;
+            /*border: 1.5px solid black;*/
             height: 75%;
             width: 350px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
+            position: relative;
+
+            /* Add a solid border to simulate the outer edge */
+            border: 1px solid black;
+
+            /* Inner outline to simulate the traced border */
+            box-shadow:
+                inset -2px -2px 0 #fff,        /* top-left light edge */
+                inset 0px 0px 0 black,       /* bottom-right darker edge */
+                8px 8px 0 whitesmoke;             /* external shadow for 3D effect */
+ 
+            }
+        
         input[type="text"] {
             width: 94%;
             height: 120px;
@@ -30,6 +41,8 @@
             margin-bottom: 10px;
             text-align: right;
             border: 1px solid black;
+            box-shadow:  -1.5px -1.5px 0 black;             /* external shadow for 3D effect */
+ 
             
         }
         .buttons button {
@@ -41,7 +54,11 @@
             margin: 1%;
             cursor: url(cursor_.png),pointer;
             border: 1px solid #bbb; /* Soft border for a more tactile effect */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 1px 3px rgba(255, 255, 255, 0.3); /* Raised effect */
+            box-shadow:
+                inset -2px -2px 0 #fff,        /* top-left light edge */
+                inset 0px 0px 0 black,       /* bottom-right darker edge */
+                2px 2px 0 black;             /* external shadow for 3D effect */
+ 
             transition: all 0.2s ease-in-out;
             
         }
@@ -63,6 +80,7 @@
 
         button.memory {
             background-color: #5dade2;
+            border-radius: 50px;
 
         }
 
