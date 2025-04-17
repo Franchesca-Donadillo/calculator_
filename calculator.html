@@ -11,15 +11,16 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: #F4F6F8;
+            background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
         }
         .calculator {
-            background: #fff;
+            background-color:#ffffff;
             padding: 20px;
             border-radius: 10px;
+            border: 1.5px solid black;
             height: 75%;
             width: 350px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         input[type="text"] {
             width: 94%;
@@ -28,22 +29,41 @@
             padding: 10px;
             margin-bottom: 10px;
             text-align: right;
+            border: 1px solid black;
+            
         }
         .buttons button {
             width: 22%;
             height: 47px;
+            border-radius: 10px;
             padding: 10px;
             font-size: 1em;
             margin: 1%;
             cursor: url(cursor_.png),pointer;
+            border: 1px solid #bbb; /* Soft border for a more tactile effect */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 1px 3px rgba(255, 255, 255, 0.3); /* Raised effect */
+            transition: all 0.2s ease-in-out;
             
         }
-        .operations{
-            background-color: orange;
 
+        .buttons button:active {
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.4); /* Inset shadow to give the "pressed" feeling */
+        }
+
+        button.operations{
+            background-color: #2ecc71;
         }
         #equals{
-            background-color: orangered;
+            background-color: #e74c3c;
+        }
+        .clear, .delete {
+            background-color: #f39c12;
+
+        }
+
+        button.memory {
+            background-color: #5dade2;
+
         }
 
      </style>
@@ -54,14 +74,14 @@
     <div class="calculator">
         <input type="text" id="display" disabled>
         <div class="buttons">
-            <button  onclick="memoryAdd()">M+</button>
-            <button onclick="memorySubtract()">M-</button>
-            <button onclick="memoryRecall()">MR</button>
-            <button onclick="memoryClear()">MC</button>
-            <button onclick="calculatePercentage()">%</button>
-            <button onclick="clearEntry()">CE</button>
-            <button onclick="clearDisplay()">C</button>
-            <button onclick="deleteLast()">⌫</button>
+            <button class="memory" onclick="memoryAdd()">M+</button>
+            <button class="memory" onclick="memorySubtract()">M-</button>
+            <button class="memory" onclick="memoryRecall()">MR</button>
+            <button class="memory" onclick="memoryClear()">MC</button>
+            <button class="clear" onclick="calculatePercentage()">%</button>
+            <button class="clear" onclick="clearEntry()">CE</button>
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="delete" onclick="deleteLast()">⌫</button>
             <button onclick="convertBase(2)">bin</button>
             <button onclick="convertBase(8)">oct</button>
             <button onclick="convertBase(16)">hex</button>
@@ -89,7 +109,9 @@
 
     <script>
         function press(val) {
-            document.getElementById('display').value += val;
+            display = document.getElementById('display').value += val;
+            limitDisplayLength(); // Limit the display length after each press
+
         }
 
         function calculate() {
@@ -98,6 +120,7 @@
             } catch (e){
                 document.getElementById('display').value = 'Error';
             }
+            limitDisplayLength();
         }
         
 
@@ -105,17 +128,15 @@
             let display = document.getElementById('display');
             display.value = display.value.slice(0, -1);
         }
-
+        limitDisplayLength();
+        
+        // Base conversion logic
         let currentBase = 10; // Starts in decimal
-
-        function press(val) {
-            document.getElementById('display').value += val;
-        }
-
 
         function clearDisplay() {
             document.getElementById('display').value = '';
             currentBase = 10; // Reset base
+            limitDisplayLength();
         }
 
         function convertBase(newBase) {
@@ -124,6 +145,8 @@
 
             // Convert from current base to decimal
             let decimalValue = parseInt(input, currentBase);
+
+            
 
             if (isNaN(decimalValue)) {
                 display.value = 'Error';
@@ -135,7 +158,10 @@
 
             display.value = convertedValue;
             currentBase = newBase; // Update base tracker
+        
+            limitDisplayLength();
         }
+
 
         function clearEntry() {
             let display = document.getElementById('display');
@@ -144,6 +170,7 @@
             // This regex removes the last number (with optional decimal point), any trailing spaces, and the operations
             display.value = current.replace(/[\d.]+$/g, '');
 
+            limitDisplayLength();
         }
 
     
@@ -163,6 +190,8 @@
             } else {
                 display.value = 'Error';
             }
+
+            limitDisplayLength();
         }
 
         function sign(){
@@ -173,6 +202,8 @@
             } else {
                 display.value = '-' + current; // Add the negative sign
             }
+
+            limitDisplayLength();
         }
 
         let memory = 0;
@@ -182,6 +213,8 @@
             if (!isNaN(value)) {
                 memory += value;
             }
+
+            limitDisplayLength();
         }
 
         function memorySubtract() {
@@ -189,15 +222,25 @@
             if (!isNaN(value)) {
                 memory -= value;
             }
+
+            limitDisplayLength();
         }
 
         function memoryRecall() {
             document.getElementById('display').value = memory;
+            limitDisplayLength();
         }
 
         function memoryClear() {
             memory = 0;
+            limitDisplayLength();
         }
+
+        function limitDisplayLength() {
+            const display = document.getElementById('display');
+            display.value = display.value.slice(0, 12);
+        }
+
 
     </script>
 </body>
