@@ -141,15 +141,24 @@
     </div>
 
     <script>
-        function press(val) {
-            display = document.getElementById('display').value += val;
-            limitDisplayLength(); // Limit the display length after each press
+        let justCalculated = false; // Flag to check if the last action was a calculation
 
+        function press(val) {
+            const display = document.getElementById('display');
+
+            if (justCalculated) {
+                display.value = ''; // Clear the display
+                justCalculated = false; // Reset flag
+            }
+
+            display.value += val;
+            limitDisplayLength();
         }
 
         function calculate() {
             try {
                 document.getElementById('display').value = eval(document.getElementById('display').value);
+                justCalculated = true;
             } catch (e){
                 document.getElementById('display').value = 'Error';
             }
