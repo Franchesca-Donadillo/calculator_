@@ -86,6 +86,7 @@
 
         button.memory {
             background-color:#d6eaf8;
+            width: 16.8%;
             border-radius: 50px;
             color: #154360;
 
@@ -111,6 +112,7 @@
             <button class="memory" onclick="memorySubtract()">M-</button>
             <button class="memory" onclick="memoryRecall()">MR</button>
             <button class="memory" onclick="memoryClear()">MC</button>
+            <button class="memory" onclick="memoryStore()">MS</button>
             <button class="clear" onclick="calculatePercentage()">%</button>
             <button class="clear" onclick="clearEntry()">CE</button>
             <button class="clear" onclick="clearDisplay()">C</button>
@@ -252,6 +254,7 @@
 
         function memoryAdd() {
                 let displayVal = eval(document.getElementById('display').value);
+                justCalculated = true;
                 if (!isNaN(displayVal)) {
                     memory += displayVal;
                 }
@@ -260,6 +263,7 @@
 
         function memorySubtract() {
                 let displayVal = eval(document.getElementById('display').value);
+                justCalculated = true;
                 if (!isNaN(displayVal)) {
                     memory -= displayVal;
                 }
@@ -272,6 +276,15 @@
             limitDisplayLength();
         }
 
+        function memoryStore() {
+            let val = eval(document.getElementById('display').value);
+            justCalculated = true;
+            if (!isNaN(val)) {
+                memory = val;
+            }
+            
+        }
+
         function memoryClear() {
             memory = 0;
             limitDisplayLength();
@@ -281,6 +294,8 @@
             const display = document.getElementById('display');
             display.value = display.value.slice(0, 12);
         }
+
+
 
 
     </script>
