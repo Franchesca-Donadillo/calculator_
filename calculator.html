@@ -150,13 +150,24 @@
         function press(val) {
             const display = document.getElementById('display');
 
-            if (justCalculated) {
-                display.value = ''; // Clear the display
-                justCalculated = false; // Reset flag
-            }
+        if (justCalculated) {
+            display.value = '';
+            justCalculated = false;
+        }
 
-            display.value += val;
-            limitDisplayLength();
+        // Prevent multiple dots in the current number
+        if (val === '.') {
+            // Get the current number (after the last operator)
+            const currentParts = display.value.split(/[\+\-\*\/]/);
+            const lastNumber = currentParts[currentParts.length - 1];
+
+            if (lastNumber.includes('.')) {
+                return; // If there's already a dot, stop here
+            }
+        }
+
+        display.value += val;
+        limitDisplayLength();
         }
 
         function calculate() {
@@ -221,56 +232,85 @@
 
     
         function calculatePercentage() {
-            let display = document.getElementById('display');
-            let current = display.value;
+            try {
+                let expression = document.getElementById('display').value;
 
-            // Find the last number in the expression
-            let match = current.match(/(\d+\.?\d*)$/);
+                // Replace 'mem' with the actual memory value
+                expression = expression.replace(/mem/g, memory);
 
-            if (match) {
-                let lastNumber = match[0];
-                let percent = parseFloat(lastNumber) / 100;
-
-                // Replace the last number with its percentage version
-                display.value = current.slice(0, -lastNumber.length) + percent;
-            } else {
-                display.value = 'Error';
+                document.getElementById('display').value = eval(expression);
+                justCalculated = true;
+            } catch (e){
+                document.getElementById('display').value = 'Error';
             }
 
             limitDisplayLength();
         }
 
         function sign(){
-            let display = document.getElementById('display');
-            let current = display.value;
-            if (current.startsWith('-')) {
-                display.value = current.slice(1); // Remove the negative sign
-            } else {
-                display.value = '-' + current; // Add the negative sign
+            const display = document.getElementById('display');
+            let value = display.value;
+
+            // Match the last number in the expression, possibly with a decimal
+            const match = value.match(/(-?\d*\.?\d+)(?!.*\d)/);
+
+            if (match) {
+                const number = match[0];
+                const index = match.index;
+
+                // Check if it already starts with a negative sign
+                const toggled = number.startsWith('-') ? number.slice(1) : '-' + number;
+
+                // Replace the last number with the toggled sign version
+                display.value = value.slice(0, index) + toggled;
             }
 
             limitDisplayLength();
         }
 
-        let memory = 0;
+        let memory = 0; // Initial memory value
 
-        function memoryAdd() {
+        // Function to monitor input in the display
+        document.getElementById('display').addEventListener('input', function() {
+            let input = document.getElementById('display').value;
+
+            // Check if 'm+' or 'm-' exists in the expression
+            if (/m\+/.test(input) || /m\-/.test(input)) {
+                document.getElementById('display').value = 'Error'; // Display error immediately
+            }
+        });
+
+        function memoryAdd() { 
+            try {
                 let displayVal = eval(document.getElementById('display').value);
                 justCalculated = true;
+
+                // If it's a valid number, add to memory
                 if (!isNaN(displayVal)) {
                     memory += displayVal;
                 }
-            limitDisplayLength();
+
+                limitDisplayLength(); // Limit the display length
+            } catch (e) {
+                document.getElementById('display').value = 'Error'; // Show error if invalid input
+                
+            }
         }
 
         function memorySubtract() {
+            try {
                 let displayVal = eval(document.getElementById('display').value);
                 justCalculated = true;
+
+                // If it's a valid number, subtract from memory
                 if (!isNaN(displayVal)) {
                     memory -= displayVal;
                 }
 
-            limitDisplayLength();
+                limitDisplayLength(); // Limit the display length
+            } catch (e) {
+                document.getElementById('display').value = 'Error'; // Show error if invalid input
+            }
         }
 
         function memoryRecall() {
